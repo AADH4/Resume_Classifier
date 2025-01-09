@@ -1,16 +1,17 @@
 import streamlit as st
-import pandas as pd
 import pickle
-import numpy as np
+import os
+from dotenv import load_dotenv
+import google.generativeai as genai
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
-import google.generativeai as genai
-from dotenv import load_dotenv
-import os
 
 # Load environment variables
 load_dotenv()
 genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
+
+# Initialize Gemini model
+model = genai.GenerativeModel('gemini-1.5-pro')
 
 # Load pre-trained model and vectorizer
 with open('rf_model.pkl', 'rb') as model_file:
@@ -27,7 +28,8 @@ def get_ai_feedback(resume_text):
             "feedback on how to improve it for job applications:\n\n"
             f"{resume_text}"
         )
-        response = genai.generate_content(prompt)
+        # Generate feedback using the model
+        response = model.generate_text(prompt)
         return response.text.strip()
     except Exception as e:
         return f"Error generating feedback: {e}"
