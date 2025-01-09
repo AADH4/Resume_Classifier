@@ -32,7 +32,7 @@ def get_applicant_feedback(resume_text, prediction):
         else:
             prompt = (
                 "You are an expert career advisor. Analyze the following resume text and provide specific, constructive "
-                "feedback on how to improve it for job applications:\n\n"
+                "feedback on how to improve it for job applications, also explain WHY the candidate was most likely rejected:\n\n"
                 f"{resume_text}"
             )
         response = model.generate_content(prompt)
