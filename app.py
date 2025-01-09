@@ -15,10 +15,10 @@ genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
 model = genai.GenerativeModel('gemini-1.5-pro')
 
 # Load pre-trained model and vectorizer
-with open('rf_model.pkl', 'rb') as model_file:
+with open('model_v2.pkl', 'rb') as model_file:
     rf_model = pickle.load(model_file)
 
-with open('tfidf_vectorizer.pkl', 'rb') as vectorizer_file:
+with open('tfidf_vectorizer_v2.pkl', 'rb') as vectorizer_file:
     tfidf_vectorizer = pickle.load(vectorizer_file)
 
 # Function to calculate keyword match
