@@ -6,11 +6,10 @@ import google.generativeai as genai
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
 
-# Load environment variables
 load_dotenv()
 genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
 
-# Initialize Gemini model
+# Initialize model
 model = genai.GenerativeModel('gemini-1.5-pro')
 
 # Load pre-trained model and vectorizer
@@ -29,7 +28,7 @@ def get_ai_feedback(resume_text):
             f"{resume_text}"
         )
         # Generate feedback using the model
-        response = model.generate_text(prompt)
+        response = model.generate_content(prompt)
         return response.text.strip()
     except Exception as e:
         return f"Error generating feedback: {e}"
