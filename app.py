@@ -29,15 +29,27 @@ st.title("Resume Classifier")
 # Add a radio button to choose between Employer and Applicant
 role = st.radio("Select your role", ('Employer', 'Applicant'))
 
-# If Applicant, allow them to upload a resume
+# If Applicant, allow them to either upload a resume or type one
 if role == 'Applicant':
-    st.subheader("Upload Your Resume")
+    st.subheader("Upload or Type Your Resume")
+
+    # Option to upload resume
     uploaded_resume = st.file_uploader("Choose a resume (in .txt format)", type='txt')
 
+    # Option to type resume manually
+    typed_resume = st.text_area("Alternatively, type your resume here:")
+
+    # Decide whether to use uploaded or typed resume
     if uploaded_resume is not None:
         # Read the uploaded resume
         resume_text = uploaded_resume.read().decode("utf-8")
+    elif typed_resume.strip() != "":
+        resume_text = typed_resume
+    else:
+        st.warning("Please upload or type your resume to proceed.")
+        resume_text = None
 
+    if resume_text is not None:
         # Predict if accepted or rejected
         resume_tfidf = tfidf_vectorizer.transform([resume_text])
         prediction = rf_model.predict(resume_tfidf)
@@ -58,3 +70,4 @@ elif role == 'Employer':
         - Structure and formatting of the resume
         - Keyword match with job descriptions
     """)
+    st.write("You can use this tool to analyze resumes and understand why certain resumes may be rejected or accepted.")
