@@ -29,9 +29,9 @@ st.title("Resume Classifier")
 # Add a radio button to choose between Employer and Applicant
 role = st.radio("Select your role", ('Employer', 'Applicant'))
 
-# If Applicant, allow them to either upload a resume or type one
-if role == 'Applicant':
-    st.subheader("Upload or Type Your Resume")
+# If Applicant or Employer, allow them to either upload a resume or type one
+if role in ['Applicant', 'Employer']:
+    st.subheader("Upload or Type Resume for Evaluation")
 
     # Option to upload resume
     uploaded_resume = st.file_uploader("Choose a resume (in .txt format)", type='txt')
