@@ -4,6 +4,13 @@ import pickle
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
+import google.generativeai as genai
+from dotenv import load_dotenv
+import os
+
+# Load environment variables
+load_dotenv()
+genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
 
 # Load pre-trained model and vectorizer
 with open('rf_model.pkl', 'rb') as model_file:
@@ -12,16 +19,18 @@ with open('rf_model.pkl', 'rb') as model_file:
 with open('tfidf_vectorizer.pkl', 'rb') as vectorizer_file:
     tfidf_vectorizer = pickle.load(vectorizer_file)
 
-# Function to get feedback for rejected resumes
-def get_rejection_feedback(resume_text):
-    # Example feedback logic based on certain features
-    feedback = "We recommend improving the clarity and structure of your resume. "
-    # Here, add logic that analyzes the text further for common rejection reasons
-    if len(resume_text.split()) < 200:
-        feedback += "Consider expanding on your experience and skills section."
-    if resume_text.count('relevant experience') == 0:
-        feedback += "Be sure to highlight your relevant work experience."
-    return feedback
+# Function to get AI-generated feedback for rejected resumes
+def get_ai_feedback(resume_text):
+    try:
+        prompt = (
+            "You are an expert career advisor. Analyze the following resume text and provide specific, constructive "
+            "feedback on how to improve it for job applications:\n\n"
+            f"{resume_text}"
+        )
+        response = genai.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        return f"Error generating feedback: {e}"
 
 # Streamlit Layout
 st.title("Resume Classifier")
@@ -59,7 +68,8 @@ if role in ['Applicant', 'Employer']:
             st.success("Your resume has been accepted!")
         else:
             st.error("Unfortunately, your resume was rejected.")
-            feedback = get_rejection_feedback(resume_text)
+            with st.spinner("Generating feedback..."):
+                feedback = get_ai_feedback(resume_text)
             st.write("Feedback:", feedback)
 
 elif role == 'Employer':
