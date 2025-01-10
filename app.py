@@ -26,7 +26,7 @@ def get_applicant_feedback(resume_text, prediction):
         if prediction == 'accepted':
             prompt = (
                 "You are an expert career advisor. The following resume has been deemed acceptable. "
-                "However, provide suggestions on how to further improve it to meet the standards of top-tier companies such as FAANG:\n\n"
+                "However, provide suggestions on how to further improve it to meet the standards of top-tier companies which are giants in the industry:\n\n"
                 f"{resume_text}"
             )
         else:
