@@ -55,9 +55,22 @@ def get_employer_feedback(resume_text, prediction):
 
 # Streamlit Layout
 st.title("Resume Classifier with Feedback")
+st.markdown("""
+## Welcome to the Resume Classifier!
 
+This application helps you evaluate resumes based on a machine learning model that predicts whether a resume is likely to be accepted or rejected by employers. It provides feedback tailored for both applicants and employers to improve the quality of resumes and hiring decisions.
+
+### How it works:
+- Upload or type a resume.
+- Choose your role (Employer or Applicant).
+- Receive AI-generated feedback on how to improve your resume or interpret an employer's decision.
+""")
 # Add a radio button to choose between Employer and Applicant
 role = st.radio("Select your role", ('Employer', 'Applicant'))
+if role == "Employer":
+    st.markdown("Welcome employer! We know that you are flooded with hundreds of resumes and we will use advanced AI and deep learning to weed out those who don't meet your company's standards and aren't fit for the job. We can make highering easier and faster so you can focus on your job!")
+elif role == "Applicant":
+    st.markdown("Welcome applicant! We understand your anxiety and worry over whether you employers at your dream job will accept your resume. No need to worry, because we use advanced AI and deep learning techniques to predict how employers will grade your resume and provide feedback for you to improve and help you land that dream job!")
 
 # If Applicant or Employer, allow them to either upload a resume or type one
 st.subheader("Upload or Type Resume for Evaluation")
